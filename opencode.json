@@ -1,0 +1,14 @@
+{
+	"$schema": "https://opencode.ai/config.json",
+	"mcp": {
+		"stagepage-directus": {
+			"type": "local",
+			"command": ["npx", "@directus/content-mcp@latest"],
+			"enabled": true,
+			"environment": {
+				"DIRECTUS_URL": "http://localhost:4343",
+				"DIRECTUS_TOKEN": "gVaE0tlJVreMrbv-xmCJVBTOKikHpWQO"
+			}
+		}
+	}
+}
