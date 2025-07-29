@@ -4,6 +4,14 @@
 
 StagePage is a digital playbill system for theater festivals and productions. The data model supports complex hierarchical relationships between festivals, productions, shows, people, and events.
 
+## 🛠️ Technical Stack
+
+### Server-Side Code Standards
+- **Effect Library**: All server-side code uses the Effect standard library (not the Svelte feature) for handling asynchronous operations, error management, and side effects
+- **No try/catch blocks**: Replace traditional try/catch with Effect's type-safe error handling
+- **Structured logging**: Use Effect's Console module instead of console.log
+- **Functional composition**: Leverage Effect's pipe and composition patterns
+
 ## 🏗️ Data Architecture
 
 ### Core Content Hierarchy
@@ -348,6 +356,100 @@ const person = await directus.items('people').readOne(personId, {
 3. **Cache program data** - Programs change infrequently
 4. **Pagination for lists** - Use `limit` and `offset` for large datasets
 5. **Filter at API level** - Use Directus filters rather than client-side filtering
+
+## 🎯 Effect Patterns for Server Code
+
+### Domain-Driven Error Types
+Instead of generic Error objects, create domain-specific error types:
+
+```typescript
+import { Data } from 'effect';
+
+// Tagged error types that represent business domain failures
+export class ItemNotFoundError extends Data.TaggedError("ItemNotFoundError")<{
+  readonly collection: string;
+  readonly id: string;
+}> {}
+
+export class InvalidParametersError extends Data.TaggedError("InvalidParametersError")<{
+  readonly message: string;
+}> {}
+
+export class CollectionFetchError extends Data.TaggedError("CollectionFetchError")<{
+  readonly collection: string;
+  readonly details: string;
+}> {}
+```
+
+### Service-Based Architecture with Context
+Use Effect's Context system for dependency injection:
+
+```typescript
+import { Effect, Layer, Context } from 'effect';
+
+// Define a service
+export class DirectusService extends Context.Tag("DirectusService")<
+  DirectusService,
+  { readonly client: any }
+>() {}
+
+// Create the service layer
+export const DirectusServiceLive = Layer.effect(
+  DirectusService,
+  Effect.promise(() => createDirectusClient()).pipe(
+    Effect.map((client) => ({ client }))
+  )
+);
+
+// Use the service
+const fetchData = pipe(
+  Effect.flatMap(DirectusService, ({ client }) => 
+    Effect.tryPromise({
+      try: () => client.request(/* ... */),
+      catch: (error) => new CollectionFetchError({ /* ... */ })
+    })
+  )
+);
+```
+
+### Clean Page Loaders
+```typescript
+import { Effect, pipe } from 'effect';
+
+const getProductions = pipe(
+  fetchProductions(),
+  Effect.map((productions) => ({ productions })),
+  // Handle specific error types with user-friendly messages
+  Effect.catchTags({
+    DirectusConnectionError: () => 
+      Effect.succeed({ productions: [], error: 'Data temporarily unavailable' }),
+    CollectionFetchError: () => 
+      Effect.succeed({ productions: [], error: 'Productions could not be loaded' })
+  })
+);
+
+export const load = async () => runWithDirectus(getProductions);
+```
+
+### Effect Type Signatures
+The real power of Effect is in type signatures that tell the complete story:
+
+```typescript
+// ❌ Traditional - no error information in types
+const fetchUser = (id: string): Promise<User>
+
+// ✅ Effect - complete information in types
+const fetchUser = (id: string): Effect<User, ItemNotFoundError | ValidationError, DatabaseService>
+//                                      ↑      ↑                                    ↑
+//                                   Success  All possible errors              Required services
+```
+
+### Key Principles
+1. **Errors as Values**: Model domain failures as data, not exceptions
+2. **Type-Driven Development**: Let the type system guide your error handling
+3. **Composition Over Coordination**: Build complex operations by composing simple effects
+4. **Services Not Globals**: Use Context for dependency injection
+5. **Explicit Resource Management**: Track what your code needs to run
 
 ## 🔮 Future Considerations
 

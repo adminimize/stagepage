@@ -105,7 +105,10 @@ let { data } = $props();
 				{#if data.production.venue}
 					<div class="bg-gray-50 rounded-lg p-4">
 						<h3 class="font-semibold text-gray-800 mb-2">Venue</h3>
-						<p>{data.production.venue}</p>
+						<a href="/venues/{encodeURIComponent(data.production.venue)}/productions" 
+						   class="text-blue-600 hover:text-blue-800 hover:underline">
+							{data.production.venue}
+						</a>
 					</div>
 				{/if}
 

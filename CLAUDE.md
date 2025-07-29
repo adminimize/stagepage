@@ -94,3 +94,7 @@ Requires `DATABASE_URL` environment variable for PostgreSQL connection (current 
 - We are currently at a point of establishing the core architecture and data models for StagePage
 - Laying groundwork for a flexible system that can handle complex theater production relationships
 - Focusing on building modular, reusable components that can adapt to various theater festival and production scenarios
+
+## Development Strategy
+
+- Using effect (the standard library, not the svelte feature) on all server side code in place of try catch and console log etc

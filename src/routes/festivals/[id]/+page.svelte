@@ -4,7 +4,7 @@ let { data } = $props();
 
 {#if data.festival}
 	<div class="container mx-auto px-4 py-8">
-		<h1 class="text-4xl font-bold mb-4">{data.festival.title}</h1>
+		<h1 class="text-4xl font-bold mb-4">{data.festival.name}</h1>
 		
 		{#if data.festival.tagline}
 			<p class="text-xl text-gray-600 mb-6">{data.festival.tagline}</p>
@@ -62,19 +62,6 @@ let { data } = $props();
 			</div>
 
 			<div class="space-y-6">
-				{#if data.festival.year}
-					<div class="bg-gray-50 rounded-lg p-4">
-						<h3 class="font-semibold text-gray-800 mb-2">Year</h3>
-						<p class="text-2xl font-bold text-blue-600">{data.festival.year}</p>
-					</div>
-				{/if}
-
-				{#if data.festival.location}
-					<div class="bg-gray-50 rounded-lg p-4">
-						<h3 class="font-semibold text-gray-800 mb-2">Location</h3>
-						<p>{data.festival.location}</p>
-					</div>
-				{/if}
 
 				{#if data.festival.start_date || data.festival.end_date}
 					<div class="bg-gray-50 rounded-lg p-4">
