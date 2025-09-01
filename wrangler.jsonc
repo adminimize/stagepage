@@ -5,6 +5,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "stagepage",
+	"account_id": "cda531f0ba8a8cc3e170b5b7dff50304",
 	"main": ".svelte-kit/cloudflare/_worker.js",
 	"compatibility_date": "2025-07-19",
 	"assets": {
