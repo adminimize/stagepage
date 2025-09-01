@@ -1,38 +1,113 @@
-# sv
+# StagePage
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A digital playbill system for theater festivals and productions built with SvelteKit, featuring modern remote functions and error boundaries.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- Modern SvelteKit 2 application with Svelte 5
+- **Remote Functions**: Type-safe client-server communication with SvelteKit's experimental remote functions
+- **Error Boundaries**: Robust error handling with `<svelte:boundary>` components
+- **Effect Library**: Functional error handling and side effect management
+- Directus headless CMS integration with auto-generated TypeScript types
+- Tailwind CSS for styling
+- Cloudflare Workers deployment
+- Comprehensive testing with Vitest and Playwright
 
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Quick Start
 
 ```bash
-npm run dev
+# Install dependencies
+bun install  # or npm install
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# Set up environment
+cp .env.example .env
+# Edit .env with your Directus URL
+
+# Start development server
+bun run dev  # or npm run dev
 ```
 
-## Building
+## Documentation
 
-To create a production version of your app:
+- **[Development Setup](docs/development/setup.md)** - Getting started guide
+- **[Remote Functions Migration](docs/plan/remote-functions-migration.md)** - Migration plan and strategy
+- **[Remote Function Examples](docs/plan/remote-function-examples.md)** - Code examples and patterns
+- **[Claude AI Guide](docs/development/claude.md)** - AI assistant guidance
+- **[Type Generation](docs/development/type-generation.md)** - TypeScript type generation
+
+## Data Architecture
+
+StagePage manages complex hierarchical relationships between festivals, productions, shows, people, and events:
+
+```
+Festivals (IMPACT 25)
+  ├── Productions (The Seventh Fire - IMPACT 25)
+  │   ├── Shows (The Seventh Fire)
+  │   ├── Programs (Digital Playbill)
+  │   └── Events (Specific Performances)
+  └── Programs (Festival-wide program)
+```
+
+## Development Commands
 
 ```bash
-npm run build
+# Development
+bun run dev                 # Start development server
+bun run build              # Build for production
+bun run preview            # Build and preview
+
+# Testing
+bun run test               # Run all tests
+bun run test:unit          # Run unit tests
+bun run test:e2e           # Run end-to-end tests
+
+# Code Quality
+bun run lint               # Run linting
+bun run format             # Format code
+bun run check              # Type check
+
+# Types & Database
+bun run types:generate     # Generate types from Directus
+
+# Deployment
+bun run deploy             # Deploy to Cloudflare Workers
 ```
 
-You can preview the production build with `npm run preview`.
+## Remote Functions
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+This project leverages SvelteKit's experimental remote functions for clean, type-safe data fetching:
+
+```typescript
+// data.remote.ts
+import { query } from '$app/server';
+
+export const getPrograms = query(async () => {
+    // Server-side data fetching
+    return await fetchPrograms();
+});
+```
+
+```svelte
+<!-- Component -->
+<svelte:boundary>
+    {#each await getPrograms() as program}
+        <div>{program.title}</div>
+    {/each}
+    
+    {#snippet pending()}
+        <p>Loading...</p>
+    {/snippet}
+    
+    {#snippet failed(error, reset)}
+        <button onclick={reset}>Try again</button>
+    {/snippet}
+</svelte:boundary>
+```
+
+## Project Status
+
+Currently migrating from traditional SvelteKit load functions to the new remote functions pattern. See the [migration plan](docs/plan/remote-functions-migration.md) for detailed progress and implementation strategy.
+
+## Contributing
+
+See [development setup guide](docs/development/setup.md) for getting started with local development.

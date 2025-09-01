@@ -7,10 +7,6 @@ export const load = async () => {
 		const programs = await directus.request(
 			readItems('programs', {
 				fields: ['*', 'production.*', 'festival.*'],
-				filter: {
-					status: { _eq: 'published' }
-				},
-				sort: ['-published_date', 'title']
 			})
 		);
 		return {
