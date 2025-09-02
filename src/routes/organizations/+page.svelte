@@ -1,12 +1,24 @@
 <script>
-import List from '$lib/components/List.svelte';
-
-let { data } = $props();
+	import { getOrganizations } from './data.remote';
+	import List from '$lib/components/List.svelte';
 </script>
 
-<List 
-	items={data.organizations} 
-	title="Organizations" 
-	sortKey="name" 
-	linkPrefix="/organizations" 
-/>
+<svelte:boundary>
+	<List 
+		items={await getOrganizations()} 
+		title="Organizations" 
+		sortKey="name" 
+		linkPrefix="/organizations" 
+	/>
+
+	{#snippet pending()}
+		<div class="loading">Loading organizations...</div>
+	{/snippet}
+
+	{#snippet failed(error, reset)}
+		<div class="error">
+			<p>Failed to load organizations</p>
+			<button onclick={reset}>Try again</button>
+		</div>
+	{/snippet}
+</svelte:boundary>
