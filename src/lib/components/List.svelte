@@ -23,6 +23,11 @@ function getDisplayName(item) {
 function getItemLink(item) {
 	return `${linkPrefix}/${item[linkKey]}`;
 }
+
+function stripHtml(html) {
+	if (!html) return '';
+	return html.replace(/<[^>]*>/g, '').trim();
+}
 </script>
 
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
@@ -46,13 +51,13 @@ function getItemLink(item) {
 								</h3>
 
 								{#if item.tagline}
-									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.tagline}</p>
+									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{stripHtml(item.tagline)}</p>
 								{:else if item.description}
-									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.description.substring(0, 120)}...</p>
+									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{stripHtml(item.description).substring(0, 120)}...</p>
 								{:else if item.default_bio}
-									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.default_bio.substring(0, 120)}...</p>
+									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{stripHtml(item.default_bio).substring(0, 120)}...</p>
 								{:else if item.subtitle}
-									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.subtitle}</p>
+									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{stripHtml(item.subtitle)}</p>
 								{/if}
 
 								<div class="flex gap-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
