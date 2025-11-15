@@ -2,14 +2,14 @@
 let { data } = $props();
 
 // Group years by decade
-const decades = data.years.reduce((acc, yearData) => {
+const decades: Record<number, typeof data.years> = data.years.reduce((acc, yearData) => {
 	const decade = Math.floor(yearData.year / 10) * 10;
 	if (!acc[decade]) {
 		acc[decade] = [];
 	}
 	acc[decade].push(yearData);
 	return acc;
-}, {} as Record<number, typeof data.years>);
+}, {});
 
 const sortedDecades = Object.entries(decades).sort(([a], [b]) => Number(b) - Number(a));
 </script>

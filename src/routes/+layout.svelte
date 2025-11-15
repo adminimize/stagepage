@@ -7,7 +7,7 @@
 	let sidebarOpen = $state(false);
 </script>
 
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
 	<Sidebar bind:isOpen={sidebarOpen} />
 
 	<!-- Main content -->

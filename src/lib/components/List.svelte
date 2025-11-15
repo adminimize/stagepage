@@ -25,37 +25,37 @@ function getItemLink(item) {
 }
 </script>
 
-<div class="bg-white rounded-lg shadow-sm">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm">
 	{#if title}
-		<header class="px-6 py-4 border-b border-gray-200">
-			<h1 class="text-2xl font-medium">{title}</h1>
+		<header class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+			<h1 class="text-2xl font-medium text-gray-900 dark:text-gray-100">{title}</h1>
 		</header>
 	{/if}
-	
+
 	<div class="p-6">
 		{#if sortedItems.length > 0}
 			<ul class="space-y-3">
 				{#each sortedItems as item}
-					<li class="border-b border-gray-100 pb-3 last:border-b-0 last:pb-0">
+					<li class="border-b border-gray-100 dark:border-gray-700 pb-3 last:border-b-0 last:pb-0">
 						<div class="flex justify-between items-start">
 							<div class="flex-1">
 								<h3 class="font-medium">
-									<a href={getItemLink(item)} class="text-blue-600 hover:text-blue-800 hover:underline">
+									<a href={getItemLink(item)} class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:underline">
 										{getDisplayName(item)}
 									</a>
 								</h3>
-								
+
 								{#if item.tagline}
-									<p class="text-sm text-gray-600 mt-1">{item.tagline}</p>
+									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.tagline}</p>
 								{:else if item.description}
-									<p class="text-sm text-gray-600 mt-1">{item.description.substring(0, 120)}...</p>
+									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.description.substring(0, 120)}...</p>
 								{:else if item.default_bio}
-									<p class="text-sm text-gray-600 mt-1">{item.default_bio.substring(0, 120)}...</p>
+									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.default_bio.substring(0, 120)}...</p>
 								{:else if item.subtitle}
-									<p class="text-sm text-gray-600 mt-1">{item.subtitle}</p>
+									<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{item.subtitle}</p>
 								{/if}
-								
-								<div class="flex gap-4 mt-2 text-xs text-gray-500">
+
+								<div class="flex gap-4 mt-2 text-xs text-gray-500 dark:text-gray-400">
 									{#if item.year}
 										<span>{item.year}</span>
 									{/if}
@@ -87,7 +87,7 @@ function getItemLink(item) {
 							</div>
 							
 							{#if item.status}
-								<span class="text-xs px-2 py-1 rounded {item.status === 'published' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}">
+								<span class="text-xs px-2 py-1 rounded {item.status === 'published' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'}">
 									{item.status}
 								</span>
 							{/if}
@@ -97,7 +97,7 @@ function getItemLink(item) {
 			</ul>
 		{:else}
 			<div class="text-center py-12">
-				<p class="text-gray-500">No items found.</p>
+				<p class="text-gray-500 dark:text-gray-400">No items found.</p>
 			</div>
 		{/if}
 	</div>

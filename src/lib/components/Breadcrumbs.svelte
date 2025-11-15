@@ -41,15 +41,15 @@ function generateBreadcrumbs(segments) {
 		{#each breadcrumbs as crumb, index}
 			<li class="inline-flex items-center">
 				{#if index > 0}
-					<span class="text-gray-400 mx-2">/</span>
+					<span class="text-gray-400 dark:text-gray-500 mx-2">/</span>
 				{/if}
-				
+
 				{#if crumb.active}
-					<span class="text-sm font-medium text-gray-500" aria-current="page">
+					<span class="text-sm font-medium text-gray-500 dark:text-gray-400" aria-current="page">
 						{crumb.name}
 					</span>
 				{:else}
-					<a href={crumb.href} class="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
+					<a href={crumb.href} class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
 						{crumb.name}
 					</a>
 				{/if}

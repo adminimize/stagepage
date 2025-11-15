@@ -6,8 +6,8 @@
 			"command": ["npx", "@directus/content-mcp@latest"],
 			"enabled": true,
 			"environment": {
-				"DIRECTUS_URL": "http://localhost:4343",
-				"DIRECTUS_TOKEN": "gVaE0tlJVreMrbv-xmCJVBTOKikHpWQO"
+				"DIRECTUS_URL": "https://stagepage.sherwood.systems",
+				"DIRECTUS_TOKEN": "3HrsbgpXQCKVyMJmjp6AKjZoJlj4Uc-s"
 			}
 		}
 	}
